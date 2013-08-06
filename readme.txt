@@ -1,8 +1,3 @@
-glaf-gac
-========
-
-Global Application Framework for GAC
-
 1）将glaf-base目录下的glaf-base.jar复制到glaf-web\WebContent\WEB-INF\lib目录下
    将glaf-framework目录下的glaf-framework.jar复制到glaf-web\WebContent\WEB-INF\lib目录下
 
@@ -34,4 +29,3 @@ JNDI名称：jdbc/glafdb,全名:java:comp/env/jdbc/glafdb
           password="654321"
           driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
           url="jdbc:sqlserver://127.0.0.1:1433;databaseName=glafdb"/>
-
