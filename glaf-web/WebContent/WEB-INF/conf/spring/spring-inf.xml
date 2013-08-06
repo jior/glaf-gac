@@ -1,0 +1,44 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xmlns:aop="http://www.springframework.org/schema/aop"
+	     xmlns:tx="http://www.springframework.org/schema/tx"
+	     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	<!-- 特采接口dao
+	<bean id="purchaseinfDao" class="com.gzk.kcode.dao.ItemListDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="hqlSentence">
+			<props>
+		
+			</props>
+		</property>
+	</bean>
+	 -->
+	<!-- 特采接口service -->
+	<!--
+	<bean id="purchaseinfService" class="com.gzgi.modules.inf.service.PurchaseinfServiceImpl">
+		<constructor-arg>
+			<ref bean="purchaseinfDao"/>
+		</constructor-arg>
+		<property name="paymentService" ref="paymentProxy"/>
+		<property name="sysuserService" ref="sysUserProxy"/>
+	</bean>	
+	-->
+	<!-- queue接口service -->
+	<bean id="queueService" class="com.glaf.base.modules.inf.service.QueueService">
+		<property name="abstractDao">
+			<ref bean="abstractDao" />
+		</property>
+		<!--<property name="paymentService">
+           <ref bean="paymentProxy" />
+      </property>-->
+	</bean>
+	<bean id="queueProxy" parent="baseTxService">
+		<property name="target">
+			<ref bean="queueService" />
+		</property>
+	</bean>
+	<bean id="springContext" class="com.glaf.base.modules.inf.SpringContextHelper"></bean>
+</beans>

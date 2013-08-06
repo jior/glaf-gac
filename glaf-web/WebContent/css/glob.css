@@ -1,0 +1,10 @@
+/* CSS Document */
+
+.tr_header th{overflow: hidden ; text-overflow: ellipsis ; border: #C3C3C3 1px solid; PADDING-BOTTOM: 0px; PADDING-LEFT: 3px; PADDING-RIGHT: 3px; font-size:14px;
+TEXT-ALIGN: center; FILTER: progid:DXImageTransform.Microsoft.gradient(enabled='enabled',startColorstr=#DDEEFE, endColorstr=#96BDD5); BACKGROUND: #f4f5f9; HEIGHT: 25px; VERTICAL-ALIGN: middle; PADDING-TOP: 3px; font-weight:bold;
+ white-space:nowrap;
+}
+.tr_header td{overflow: hidden ; text-overflow: ellipsis ; border: #C3C3C3 1px solid; PADDING-BOTTOM: 0px; PADDING-LEFT: 3px; PADDING-RIGHT: 3px; font-size:14px;
+TEXT-ALIGN: center; FILTER: progid:DXImageTransform.Microsoft.gradient(enabled='enabled',startColorstr=#DDEEFE, endColorstr=#96BDD5); BACKGROUND: #f4f5f9; HEIGHT: 25px; VERTICAL-ALIGN: middle; PADDING-TOP: 3px; font-weight:bold;
+ white-space:nowrap;
+}
