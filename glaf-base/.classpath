@@ -79,7 +79,6 @@
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/jxls-reader.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/log4j.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/mail.jar"/>
-	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/memcached-java-client.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/mvel2.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/mybatis-2.3.5.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/mybatis-3.0.6.jar"/>
@@ -95,9 +94,6 @@
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/slf4j-log4j.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/spring-aop.RELEASE.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/spring-aspects.RELEASE.jar"/>
-	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/spring-batch-core.RELEASE.jar"/>
-	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/spring-batch-infrastructure.RELEASE.jar"/>
-	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/spring-batch-integration.RELEASE.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/spring-beans.RELEASE.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/spring-context-support.RELEASE.jar"/>
 	<classpathentry kind="lib" path="/gac-glaf-web/WebContent/WEB-INF/lib/spring-context.RELEASE.jar"/>
