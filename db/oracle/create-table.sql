@@ -161,7 +161,7 @@
 
 
  create table sys_dictory ( 
-    id numeric(19,0) identity  not null ,
+    id numeric(19,0)  not null ,
     typeId numeric(19,0) ,
     code varchar2  (255) ,
     name varchar2  (255) ,

@@ -157,7 +157,7 @@
 
 
  create table sys_dictory ( 
-    id bigint identity  not null ,
+    id bigint not null auto_increment ,
     typeId bigint ,
     code varchar (255) ,
     name varchar (255) ,
@@ -290,7 +290,7 @@
     taskName varchar (255) ,
     title varchar (255) ,
     type varchar (255) ,
-    sql varchar (255) ,
+    `sql` varchar (255) ,
     versionNo bigint ,
     allListLink varchar (255) ,
     configFlag integer ,
