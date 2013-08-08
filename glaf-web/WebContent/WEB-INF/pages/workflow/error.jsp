@@ -5,12 +5,12 @@
 <%@ page import="com.glaf.base.modules.sys.service.*"%>
 <%@ page import="org.jpage.actor.*"%>
 <%
-    SysUser user = (SysUser) request.getSession().getAttribute(SysConstants.LOGIN);
+    String user = (String) request.getSession().getAttribute(SysConstants.LOGIN);
 	if( request.getSession().getAttribute(org.jpage.util.Constant.LOGIN_USER) == null){
 		if(user != null){
            User x = new User();
-		   x.setActorId(user.getAccount());
-		   x.setName(user.getName());
+		   x.setActorId(user);
+		   //x.setName(user.getName());
 		   request.getSession().setAttribute(org.jpage.util.Constant.LOGIN_USER, x) ;
 		}else{
 %>
