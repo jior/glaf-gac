@@ -326,7 +326,6 @@
     deptName varchar2  (255) ,
     roleId numeric(19,0) ,
     roleCode varchar2  (255) ,
-    rowId varchar2  (255) ,
     todoId numeric(19,0) ,
     appId number(10,0) ,
     moduleId number(10,0) ,
@@ -413,7 +412,7 @@ create table sys_user_role (
 );
 
 create table sys_role(
-        id bigint not null,
+        id numeric(19,0) not null,
         name varchar2(255),
         roledesc varchar2(255),
         code varchar2(255),
