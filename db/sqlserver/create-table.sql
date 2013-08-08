@@ -412,15 +412,15 @@ create table sys_user_role (
     primary key (id) 
 );
 
-CREATE TABLE sys_role(
-        id BIGINT NOT NULL IDENTITY,
-        name VARCHAR(255),
-        roleDesc VARCHAR(255),
-        code VARCHAR(255),
-        sort INT,
-        CREATEBY VARCHAR(50),
-        CREATEDATE DATETIME2,
-        UPDATEBY VARCHAR(50),
-        UPDATEDATE DATETIME2,
-        PRIMARY KEY (id)
+create table sys_role(
+        id bigint not null identity,
+        name varchar(255),
+        roledesc varchar(255),
+        code varchar(255),
+        sort integer,
+        createby varchar(50),
+        createdate datetime,
+        updateby varchar(50),
+        updatedate datetime,
+        primary key (id)
     );
