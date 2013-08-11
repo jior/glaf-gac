@@ -14,7 +14,7 @@ List list = (List)request.getAttribute("authorizedUser");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<title>XXXX基础平台系统</title>
+<title>GLAF基础平台系统</title>
 <base target="_self">
 <link href="<%=context%>/css/site.css" type="text/css" rel="stylesheet">
 <script language="javascript" src='<%=context%>/js/verify.js'></script>
@@ -26,7 +26,9 @@ List list = (List)request.getAttribute("authorizedUser");
 <script type='text/javascript' src='<%=context%>/dwr/interface/SysUserRoleAjaxService.js'></script>
 <script type='text/javascript' src='<%=context%>/dwr/engine.js'></script>
 <script type='text/javascript' src='<%=context%>/dwr/util.js'></script>
-</head>
+<script type="text/javascript">
+ var context = "<%=request.getContextPath()%>";
+</script>
 <script language="javascript">
 var fromUserId=<%=user.getId()%>;
 var num=0;
@@ -174,6 +176,7 @@ function delRow(table,id){
 	document.getElementById(table).deleteRow(index);
 }
 </script>
+</head>
 <body>
 <table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="box">
     <tr>

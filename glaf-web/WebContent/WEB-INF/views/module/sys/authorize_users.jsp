@@ -23,8 +23,10 @@ List list = pager.getResults();
 <script src="<%=context%>/js/calendar/calendar.js" language="javascript"></script>
 <script src="<%=context%>/js/calendar/lang/calendar-en.js" language="javascript"></script>
 <script src="<%=context%>/js/calendar/lang/calendar-setup.js" language="javascript"></script>
+<script language="javascript">
 
-<script language="JavaScript">
+var context = "<%=request.getContextPath()%>";
+
 var num=0;
 function checkOperation(form){
   num = getCheckedBoxNum(form,"id");

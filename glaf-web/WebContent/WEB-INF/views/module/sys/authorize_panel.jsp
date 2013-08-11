@@ -27,8 +27,10 @@ List processList = (List)request.getAttribute("processList");
 <script type='text/javascript' src='<%=context%>/dwr/interface/SysUserRoleAjaxService.js'></script>
 <script type='text/javascript' src='<%=context%>/dwr/engine.js'></script>
 <script type='text/javascript' src='<%=context%>/dwr/util.js'></script>
-</head>
 <script language="javascript">
+
+var context = "<%=request.getContextPath()%>";
+
 var fromUserId=<%=user.getId()%>;
 var num=0;
 var num2=0;
@@ -136,6 +138,7 @@ function add(){
   }
 }
 </script>
+</head>
 <body>
 <a href="<%=context%>/sys/sysUserRole.do?method=showSysAuth&id=<%=user.getId()%>" id="link"></a>
 <html:form method="post" action="/sys/sysUserRole.do?method=showSysAuth" target="_self">

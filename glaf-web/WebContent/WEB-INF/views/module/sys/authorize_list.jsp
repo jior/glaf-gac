@@ -20,6 +20,9 @@ SysUser user = com.glaf.base.utils.RequestUtil.getLoginUser(request);
 <script language="javascript" src='<%=context%>/js/main.js'></script>
 <script type='text/javascript' src='<%=context%>/dwr/interface/SysUserRoleAjaxService.js'></script>
 <script type='text/javascript' src='<%=context%>/dwr/engine.js'></script>
+<script type="text/javascript">
+ var context = "<%=request.getContextPath()%>";
+</script>
 </head>
 <style type="text/css">
 #b{
