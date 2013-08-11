@@ -29,3 +29,5 @@ JNDIÃû³Æ£ºjdbc/glafdb,È«Ãû:java:comp/env/jdbc/glafdb
           password="654321"
           driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
           url="jdbc:sqlserver://127.0.0.1:1433;databaseName=glafdb"/>
+
+
