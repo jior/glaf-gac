@@ -424,3 +424,9 @@ create table sys_role(
         updatedate datetime,
         primary key (id)
     );
+
+create table sys_permission(
+        roleid bigint not null,
+        funcid bigint not null,
+        primary key (roleid, funcid)
+ );

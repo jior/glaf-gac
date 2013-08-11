@@ -277,7 +277,7 @@ function addHr(){
 							class="button" onClick="javascript:resetPwd(this.form);" disabled>
 						<input name="btn_role" type="button" value="角色设置" class="button"
 							onClick="javascript:roles(this.form);" disabled>
-						<input name="btn_hruser" type="button" value="从HR中增加" class="button" onclick="addHr()"/>
+						<!-- <input name="btn_hruser" type="button" value="从HR中增加" class="button" onclick="addHr()"/> -->
 					</td>
 					<td width="50%">
 						<%
