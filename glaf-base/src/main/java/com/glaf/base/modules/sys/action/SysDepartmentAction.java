@@ -23,12 +23,14 @@ import com.glaf.base.modules.sys.model.SysTree;
 import com.glaf.base.modules.sys.model.SysUser;
 import com.glaf.base.modules.sys.service.SysDepartmentService;
 import com.glaf.base.modules.sys.service.SysTreeService;
+import com.glaf.base.utils.Authentication;
 import com.glaf.base.utils.PageResult;
 import com.glaf.base.utils.ParamUtil;
 import com.glaf.base.utils.RequestUtil;
 
 public class SysDepartmentAction extends DispatchActionSupport {
-	private static final Log logger = LogFactory.getLog(SysDepartmentAction.class);
+	private static final Log logger = LogFactory
+			.getLog(SysDepartmentAction.class);
 	private SysDepartmentService sysDepartmentService;
 	private SysTreeService sysTreeService;
 
@@ -45,10 +47,14 @@ public class SysDepartmentAction extends DispatchActionSupport {
 	public ActionForward batchDelete(ActionMapping mapping,
 			ActionForm actionForm, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
-		boolean ret = true;
+		boolean ret = false;
 		long[] id = ParamUtil.getLongParameterValues(request, "id");
-		ret = sysDepartmentService.deleteAll(id);
+		SysUser user = RequestUtil.getLoginUser(request);
+		if (user != null) {
+			if (user.isSystemAdmin() || user.isDepartmentAdmin()) {
+				ret = sysDepartmentService.deleteAll(id);
+			}
+		}
 
 		ActionMessages messages = new ActionMessages();
 		if (ret) {// 保存成功
@@ -358,13 +364,13 @@ public class SysDepartmentAction extends DispatchActionSupport {
 
 		return mapping.findForward("show_list");
 	}
-	
-	public ActionForward addHRDeptToDept(ActionMapping mapping, ActionForm actionForm,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
-			String[] id=request.getParameterValues("id");
-			sysDepartmentService.addHRDeptToSystem(id);
-			request.setAttribute("msg", "添加部门成功!");
+
+	public ActionForward addHRDeptToDept(ActionMapping mapping,
+			ActionForm actionForm, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String[] id = request.getParameterValues("id");
+		sysDepartmentService.addHRDeptToSystem(id);
+		request.setAttribute("msg", "添加部门成功!");
 		return mapping.findForward("msg_close");
 	}
 }

@@ -10,7 +10,6 @@ import com.glaf.base.dao.AbstractSpringDao;
 import com.glaf.base.modules.sys.SysConstants;
 import com.glaf.base.modules.sys.model.SysDepartment;
 import com.glaf.base.modules.sys.model.SysTree;
-import com.glaf.base.utils.Authentication;
 import com.glaf.base.utils.PageResult;
 
 public class SysDepartmentServiceImpl implements SysDepartmentService {
@@ -126,21 +125,14 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
 	 * @return boolean
 	 */
 	public boolean delete(SysDepartment bean) {
-		if (Authentication.getAuthenticatedUser() != null) {
-			if (Authentication.getAuthenticatedUser().isSystemAdmin()
-					|| Authentication.getAuthenticatedUser()
-							.isDepartmentAdmin()) {
-				if (bean.getNode() != null) {
-					sysTreeService.delete(bean.getNode().getId());
-				} else {
-					if (bean.getNodeId() != 0) {
-						sysTreeService.delete(bean.getNodeId());
-					}
-				}
-				return abstractDao.delete(bean);
+		if (bean.getNode() != null) {
+			sysTreeService.delete(bean.getNode().getId());
+		} else {
+			if (bean.getNodeId() != 0) {
+				sysTreeService.delete(bean.getNodeId());
 			}
 		}
-		return false;
+		return abstractDao.delete(bean);
 	}
 
 	/**
