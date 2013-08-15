@@ -1,6 +1,5 @@
 package com.glaf.base.modules.sys.service;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Hibernate;
-import org.jpage.util.DigestUtil;
 
 import com.glaf.base.dao.AbstractSpringDao;
 import com.glaf.base.modules.sys.model.ExpEmployees;
@@ -24,7 +23,8 @@ import com.glaf.base.modules.sys.model.SysUserRole;
 import com.glaf.base.utils.PageResult;
 
 public class SysUserServiceImpl implements SysUserService {
-	private static final Log logger = LogFactory.getLog(SysUserServiceImpl.class);
+	private static final Log logger = LogFactory
+			.getLog(SysUserServiceImpl.class);
 
 	private AbstractSpringDao abstractDao;
 
@@ -117,7 +117,7 @@ public class SysUserServiceImpl implements SysUserService {
 	 * @return
 	 */
 	public SysUser findById(long id) {
-		if (id == 0){
+		if (id == 0) {
 			return null;
 		}
 		return (SysUser) abstractDao.find(SysUser.class, new Long(id));
@@ -353,7 +353,7 @@ public class SysUserServiceImpl implements SysUserService {
 		while (iter.hasNext()) {
 			SysUserRole bean = (SysUserRole) iter.next();
 			if (bean.getDeptRole() != null) {
-				//logger.debug("id=" + bean.getDeptRole().getId());
+				// logger.debug("id=" + bean.getDeptRole().getId());
 				set.add(bean.getDeptRole());
 			}
 		}
@@ -536,6 +536,7 @@ public class SysUserServiceImpl implements SysUserService {
 
 		return flag;
 	}
+
 	// /**
 	// * 获取上一级领导
 	// * @param user
@@ -551,80 +552,58 @@ public class SysUserServiceImpl implements SysUserService {
 	// public List getAllLeader(SysUser user){
 	//
 	// }
-	
-	
-	
-	public PageResult getHRUserList(String fullName, int pageNo,
-			int pageSize) {
+
+	public PageResult getHRUserList(String fullName, int pageNo, int pageSize) {
 		String query = "";
-		String countSql="select count(*) from ExpEmployees a where  not exists(from SysUser b where a.code=b.account)";
+		String countSql = "select count(*) from ExpEmployees a where  not exists(from SysUser b where a.code=b.account)";
 		query = "select a from ExpEmployees a where not exists(from SysUser b where a.code=b.account)";
-		if(!isNull(fullName)){
-			countSql+=" and a.name like '%"+fullName+"%' ";
-			query+=" and a.name like '%"+fullName+"%' ";
+		if (!isNull(fullName)) {
+			countSql += " and a.name like '%" + fullName + "%' ";
+			query += " and a.name like '%" + fullName + "%' ";
 		}
-		
+
 		int count = ((Long) abstractDao.getList(countSql, null, null)
 				.iterator().next()).intValue();
-			
 
-			List list = abstractDao.getList(query, new Object[0], null);
-			if (list == null) {// 结果集为空
-				PageResult pager = new PageResult();
-				pager.setPageSize(pageSize);
-				return pager;
-			}
-			logger.info(query);
-			logger.info("count = " + count);
-			return abstractDao.getList(query, new Object[0], pageNo, pageSize, count);
-	}
-	
-	public void createSysUsers(String account[],String deptId){
-		Map params = new HashMap();
-		List list= abstractDao.getList("from ExpEmployees a where a.code in('"+join(account,"','")+"')", params);
-		
-		SysDepartment dept= (SysDepartment) abstractDao.find(SysDepartment.class, Long.parseLong(deptId));
-		String encPwd="11111111";
-		try {
-			encPwd = DigestUtil.digestString("11111111", "MD5");
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+		List list = abstractDao.getList(query, new Object[0], null);
+		if (list == null) {// 结果集为空
+			PageResult pager = new PageResult();
+			pager.setPageSize(pageSize);
+			return pager;
 		}
-		if(list!=null&&dept!=null)
-			for(Object o:list){
-				ExpEmployees epl =(ExpEmployees)o;
-				if(epl==null)continue;
-				SysUser sysuer= new SysUser();
-				sysuer.setAccount(epl.getCode());
-				sysuer.setCode(epl.getCode());
-				sysuer.setEmail(epl.getEmail());
-				sysuer.setCreateTime(new Date());
-				sysuer.setMobile(epl.getMobil());
-				sysuer.setDepartment(dept);
-				sysuer.setPassword(encPwd);
-				sysuer.setName(epl.getName());
-				sysuer.setGender("M".equalsIgnoreCase(epl.getSex())?0:1);
-				this.abstractDao.create(sysuer);
-			}
+		logger.info(query);
+		logger.info("count = " + count);
+		return abstractDao.getList(query, new Object[0], pageNo, pageSize,
+				count);
 	}
-	
-	
-	private String join(String[] data,String jp){
-		if(data==null) return " ";
-		boolean isFirst=true;
-		String rst ="";
-		for(String s:data){
-			if(isFirst)isFirst=false;
-			else rst+=jp;
-			rst+=s;
+
+	 
+	private String join(String[] data, String jp) {
+		if (data == null)
+			return " ";
+		boolean isFirst = true;
+		String rst = "";
+		for (String s : data) {
+			if (isFirst)
+				isFirst = false;
+			else
+				rst += jp;
+			rst += s;
 		}
 		return rst;
 	}
-	
-	private boolean isNull(String str){
-		if(str==null)return true;
-		if("".equals(str.trim()))return true;
+
+	private boolean isNull(String str) {
+		if (str == null)
+			return true;
+		if ("".equals(str.trim()))
+			return true;
 		return false;
 	}
-	
+
+	public static void main(String[] args) {
+		System.out.print(org.apache.commons.codec.digest.DigestUtils
+				.md5Hex("111111".getBytes()));
+	}
+
 }

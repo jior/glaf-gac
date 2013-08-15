@@ -177,9 +177,7 @@ public interface SysUserService {
 			int pageNo, int pageSize);
 
 	boolean isThisPlayer(SysUser user, String code);
-
-	
-	public void createSysUsers(String account[],String deptId);
+ 
 	
 	public PageResult getHRUserList(String fullName, int pageNo,int pageSize);
 }

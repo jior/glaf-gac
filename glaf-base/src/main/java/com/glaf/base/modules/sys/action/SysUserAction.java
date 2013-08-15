@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,7 +19,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.jpage.util.DigestUtil;
 import org.springframework.web.struts.DispatchActionSupport;
 
 import com.glaf.base.modules.Constants;
@@ -63,7 +63,7 @@ public class SysUserAction extends DispatchActionSupport {
 			logger.debug("-------------------------------------");
 			boolean success = false;
 			SysDeptRole deptRole = sysDeptRoleService.find(deptId, roleId);
-			if(deptRole == null){
+			if (deptRole == null) {
 				/**
 				 * 没有部门角色，增加一个 jior2008@gmail.com add 2012-12-20
 				 */
@@ -88,7 +88,7 @@ public class SysUserAction extends DispatchActionSupport {
 				}
 				deptRole.setUsers(users);
 				success = sysDeptRoleService.update(deptRole);
-			}  
+			}
 
 			ActionMessages messages = new ActionMessages();
 			if (success) {
@@ -344,17 +344,17 @@ public class SysUserAction extends DispatchActionSupport {
 			logger.debug(login.getAccount() + " is dept admin");
 		}
 
-		//if (login.isDepartmentAdmin() || login.isSystemAdmin()) {
+		// if (login.isDepartmentAdmin() || login.isSystemAdmin()) {
 
-			long id = ParamUtil.getIntParameter(request, "id", 0);
-			SysUser bean = sysUserService.findById(id);
+		long id = ParamUtil.getIntParameter(request, "id", 0);
+		SysUser bean = sysUserService.findById(id);
 
-			String newPwd = ParamUtil.getParameter(request, "newPwd");
-			if (bean != null && StringUtils.isNotEmpty(newPwd)) {
-				bean.setPassword(DigestUtil.digestString(newPwd, "MD5"));
-				ret = sysUserService.update(bean);
-			}
-		//}
+		String newPwd = ParamUtil.getParameter(request, "newPwd");
+		if (bean != null && StringUtils.isNotEmpty(newPwd)) {
+			bean.setPassword(DigestUtils.md5Hex(newPwd.getBytes()));
+			ret = sysUserService.update(bean);
+		}
+		// }
 
 		ActionMessages messages = new ActionMessages();
 		if (ret) {// 保存成功
@@ -391,7 +391,7 @@ public class SysUserAction extends DispatchActionSupport {
 		bean.setName(ParamUtil.getParameter(request, "name"));
 		// bean.setPassword(ParamUtil.getParameter(request, "password"));
 		String password = ParamUtil.getParameter(request, "password");
-		String pwd = DigestUtil.digestString(password, "MD5");
+		String pwd = DigestUtils.md5Hex(password.getBytes());
 		bean.setPassword(pwd);
 		bean.setGender(ParamUtil.getIntParameter(request, "gender", 0));
 		bean.setMobile(ParamUtil.getParameter(request, "mobile"));
@@ -539,9 +539,9 @@ public class SysUserAction extends DispatchActionSupport {
 			// bean.setPassword(CryptUtil.EnCryptPassword(ParamUtil.getParameter(request,
 			// "password")));
 
-			String encPwd = DigestUtil.digestString(oldPwd, "MD5");
+			String encPwd = DigestUtils.md5Hex(oldPwd.getBytes());
 			if (StringUtils.equals(encPwd, user.getPassword())) {
-				user.setPassword(DigestUtil.digestString(newPwd, "MD5"));
+				user.setPassword(DigestUtils.md5Hex(newPwd.getBytes()));
 				ret = sysUserService.update(user);
 			}
 		}
@@ -928,16 +928,6 @@ public class SysUserAction extends DispatchActionSupport {
 		request.setAttribute("pager", pager);
 		request.setAttribute("parent", parent);
 		return mapping.findForward("hr_user_list");
-	}
-
-	public ActionForward saveHRUser(ActionMapping mapping,
-			ActionForm actionForm, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		String[] ids = request.getParameterValues("id");
-		String deptid = request.getParameter("deptId");
-		sysUserService.createSysUsers(ids, deptid);
-		request.setAttribute("msg", "添加用户成功！");
-		return mapping.findForward("msg_close");
 	}
 
 }

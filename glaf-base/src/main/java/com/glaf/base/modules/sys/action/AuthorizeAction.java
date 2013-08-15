@@ -7,6 +7,7 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts.action.ActionForm;
@@ -14,7 +15,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.jpage.util.DigestUtil;
 import org.springframework.web.struts.DispatchActionSupport;
 
 import com.glaf.base.callback.CallbackProperties;
@@ -67,7 +67,7 @@ public class AuthorizeAction extends DispatchActionSupport {
 		// 获取参数
 		String account = ParamUtil.getParameter(request, "account");
 		String password = ParamUtil.getParameter(request, "password");
-		String pwd = DigestUtil.digestString(password, "MD5");
+		String pwd = DigestUtils.md5Hex(password.getBytes());
 
 		logger.debug(account + " start login........................");
 
@@ -119,7 +119,7 @@ public class AuthorizeAction extends DispatchActionSupport {
 			// 保存session对象，跳转到后台主页面
 			request.getSession().setAttribute(SysConstants.MENU, menus);
 
-			if (bean.getAccountType() == 1&&false) {// 供应商用户
+			if (bean.getAccountType() == 1 && false) {// 供应商用户
 				return mapping.findForward("show_sp_frame");
 			} else {
 				return mapping.findForward("show_frame");
