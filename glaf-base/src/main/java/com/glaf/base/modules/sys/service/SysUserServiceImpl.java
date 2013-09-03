@@ -74,8 +74,13 @@ public class SysUserServiceImpl implements SysUserService {
 	 * @return boolean
 	 */
 	public boolean delete(SysUser bean) {
-
-		return abstractDao.delete(bean);
+		String sql = " delete from sys_user_role where userid = "
+				+ bean.getId();
+		abstractDao.executeSQL(sql);
+		sql = " delete from sys_user where account = '" + bean.getAccount()
+				+ "'";
+		abstractDao.executeSQL(sql);
+		return true;
 	}
 
 	/**
@@ -104,10 +109,11 @@ public class SysUserServiceImpl implements SysUserService {
 		List list = new ArrayList();
 		for (int i = 0; i < id.length; i++) {
 			SysUser bean = findById(id[i]);
-			if (bean != null)
-				list.add(bean);
+			if (bean != null) {
+				this.delete(bean);
+			}
 		}
-		return abstractDao.deleteAll(list);
+		return true;
 	}
 
 	/**
@@ -577,7 +583,6 @@ public class SysUserServiceImpl implements SysUserService {
 				count);
 	}
 
-	 
 	private String join(String[] data, String jp) {
 		if (data == null)
 			return " ";

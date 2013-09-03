@@ -75,7 +75,7 @@ insert into sys_department (id, name, deptdesc, createtime, sort, deptno, code, 
 
 /*初始化用户信息*/
 
-insert into sys_user (id, account, password, code, name, blocked, createTime, lastLoginTime, lastLoginIP, evection, mobile, email, telephone, gender, headship, userType, fax, accountType, dumpFlag, adminFlag, deptId) values (1, 'root', 'lueSGJZetyySpUndWjMB', 'root', 'root', 0, '2013-08-01 00:00:00', '2013-08-01 00:00:00', '127.0.0.1', 0, '111', 'root@127.0.0.1', '111', 0, '管理员', 40, null, 0, 0, '1', 6);
+insert into sys_user (id, account, password, code, name, blocked, createTime, lastLoginTime, lastLoginIP, evection, mobile, email, telephone, gender, headship, userType, fax, accountType, dumpFlag, adminFlag, deptId) values (1, 'root', '96e79218965eb72c92a549dd5a330112', 'root', 'root', 0, '2013-08-01 00:00:00', '2013-08-01 00:00:00', '127.0.0.1', 0, '111', 'root@127.0.0.1', '111', 0, '管理员', 40, null, 0, 0, '1', 6);
 
 
 /*初始化应用信息*/
