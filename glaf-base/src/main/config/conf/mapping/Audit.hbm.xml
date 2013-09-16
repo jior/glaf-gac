@@ -10,7 +10,7 @@
            dynamic-insert="true">
         <id name="id" type="long" unsaved-value="0">
             <column name="id" not-null="true"/>
-            <generator class="identity"/>
+            <generator class="native"/>
         </id>
         
         <property name="referId" type="long" column="referId"/>

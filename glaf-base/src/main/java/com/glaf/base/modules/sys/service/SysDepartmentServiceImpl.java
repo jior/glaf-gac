@@ -2,13 +2,16 @@ package com.glaf.base.modules.sys.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.Hibernate;
 
 import com.glaf.base.dao.AbstractSpringDao;
 import com.glaf.base.modules.sys.SysConstants;
 import com.glaf.base.modules.sys.model.SysDepartment;
+import com.glaf.base.modules.sys.model.SysDeptRole;
 import com.glaf.base.modules.sys.model.SysTree;
 import com.glaf.base.utils.PageResult;
 
@@ -65,7 +68,7 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
 	}
 
 	/**
-	 * 修改子部门的状态(add by kxr 2010-09-15)
+	 * 修改子部门的状态
 	 * 
 	 * @param list
 	 * @param status
@@ -90,34 +93,6 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
 	}
 
 	/**
-	 * 更新历史部门
-	 * 
-	 * @param bean
-	 * @return
-	 */
-	// public boolean updateHistoryDepart(SysDepartment bean,long
-	// historyIds[],SysUser user){
-	// if(this.abstractDao.execute("delete SysDepartHistory a where a.newDepart.id="+bean.getId())){
-	// if(historyIds != null && historyIds.length != 0){
-	// Set historyDeparts = new HashSet();
-	// for(int i=0 ; i<historyIds.length ; i++){
-	// SysDepartment oldDepart = this.findById(historyIds[i]);
-	// SysDepartHistory historyDepart = new SysDepartHistory();
-	// historyDepart.setOldDepart(oldDepart);
-	// historyDepart.setNewDepart(bean);
-	// historyDepart.setActorId(user.getId());
-	// historyDepart.setCreateDate(new Date());
-	// historyDepart.setUpdateDate(new Date());
-	// historyDepart.setRemark("");
-	// this.abstractDao.create(historyDepart);
-	// historyDeparts.add(historyDepart);
-	// }
-	// bean.setHistoryDeparts(historyDeparts);
-	// }
-	// }
-	// return true;
-	// }
-	/**
 	 * 删除
 	 * 
 	 * @param bean
@@ -125,14 +100,45 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
 	 * @return boolean
 	 */
 	public boolean delete(SysDepartment bean) {
-		if (bean.getNode() != null) {
-			sysTreeService.delete(bean.getNode().getId());
-		} else {
-			if (bean.getNodeId() != 0) {
-				sysTreeService.delete(bean.getNodeId());
+		logger.debug("---------------delete dept------------------------");
+		Object[] values = new Object[] { new Long(bean.getId()) };
+		String query = "from SysDeptRole a where a.dept.id=? order by a.sort desc";
+		List<SysDeptRole> deptRoles = abstractDao.getList(query, values, null);
+		if (deptRoles != null && !deptRoles.isEmpty()) {
+			for (SysDeptRole deptRole : deptRoles) {
+				long deptRoleId = deptRole.getId();
+				abstractDao
+						.executeSQL(" delete from sys_permission where roleId="
+								+ deptRoleId);
+				abstractDao.executeSQL(" delete from sys_access where roleId="
+						+ deptRoleId);
+				abstractDao
+						.executeSQL(" delete from sys_user_role where roleId="
+								+ deptRoleId);
+				abstractDao.executeSQL(" delete from sys_dept_role where id="
+						+ deptRoleId);
 			}
 		}
-		return abstractDao.delete(bean);
+
+		logger.debug("---------------delete users------------------------");
+		abstractDao.executeSQL(" delete from sys_user where deptId="
+				+ bean.getId());
+		abstractDao.executeSQL(" delete from sys_department where id="
+				+ bean.getId());
+
+		if (bean.getNode() != null) {
+			abstractDao.executeSQL(" delete from sys_tree where id="
+					+ bean.getNode().getId());
+			// sysTreeService.delete(bean.getNode().getId());
+		} else {
+			if (bean.getNodeId() != 0) {
+				abstractDao.executeSQL(" delete from sys_tree where id="
+						+ bean.getNodeId());
+				// sysTreeService.delete(bean.getNodeId());
+			}
+		}
+
+		return true;
 	}
 
 	/**
