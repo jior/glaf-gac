@@ -66,7 +66,19 @@ public interface SysTreeService {
 	 *            int
 	 * @return List
 	 */
-	void getSysTree(List<SysTree> tree, int parent, int deep);
+	void getSysTree(List<SysTree> trees, int parent, int deep);
+
+	/**
+	 * 获取树型列表(包含部门)
+	 * 
+	 * @param parent
+	 *            int
+	 * @return List
+	 */
+	void getSysTreeWithDepts(List<SysTree> trees, int parent, int deep);
+	
+	
+	SysTree getSysTreeWithDept(int nodeId);
 
 	/**
 	 * 按树编号获取树节点

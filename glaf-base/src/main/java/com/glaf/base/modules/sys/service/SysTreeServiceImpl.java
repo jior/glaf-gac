@@ -171,7 +171,7 @@ public class SysTreeServiceImpl implements SysTreeService {
 	}
 
 	/**
-	 * 获取全部列表（add by kxr 2010-09-14)
+	 * 获取全部列表
 	 * 
 	 * @param parent
 	 *            int 父ID
@@ -197,7 +197,7 @@ public class SysTreeServiceImpl implements SysTreeService {
 	 *            int
 	 * @return List
 	 */
-	public void getSysTree(List tree, int parent, int deep) {
+	public void getSysTree(List<SysTree> tree, int parent, int deep) {
 		// 首先获取当前节点下的所有子节点
 		Object[] values = new Object[] { new Long(parent) };
 		String query = "from SysTree a where a.parent=? order by a.sort desc";
@@ -211,6 +211,43 @@ public class SysTreeServiceImpl implements SysTreeService {
 				getSysTree(tree, (int) bean.getId(), bean.getDeep());
 			}
 		}
+	}
+
+	/**
+	 * 获取树型列表
+	 * 
+	 * @param parent
+	 *            int
+	 * @return List
+	 */
+	public void getSysTreeWithDepts(List<SysTree> tree, int parent, int deep) {
+		// 首先获取当前节点下的所有子节点
+		Object[] values = new Object[] { new Long(parent) };
+		String query = "from SysTree a where a.parent=? order by a.sort desc";
+		List nodes = abstractDao.getList(query, values, null);
+		if (nodes != null && !nodes.isEmpty()) {
+			Iterator iter = nodes.iterator();
+			while (iter.hasNext()) {// 递归遍历
+				SysTree bean = (SysTree) iter.next();
+				bean.setDeep(deep + 1);
+				bean.getDepartment();
+				tree.add(bean);// 加入到数组
+				getSysTree(tree, (int) bean.getId(), bean.getDeep());
+			}
+		}
+	}
+
+	public SysTree getSysTreeWithDept(int nodeId) {
+		// 首先获取当前节点下的所有子节点
+		SysTree tree = null;
+		Object[] values = new Object[] { new Long(nodeId) };
+		String query = "from SysTree a where a.id=? ";
+		List nodes = abstractDao.getList(query, values, null);
+		if (nodes != null && !nodes.isEmpty()) {
+			tree = (SysTree) nodes.get(0);
+			tree.getDepartment();
+		}
+		return tree;
 	}
 
 	/**

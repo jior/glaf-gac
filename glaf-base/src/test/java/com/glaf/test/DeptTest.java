@@ -11,6 +11,6 @@ public class DeptTest extends AbstractTest {
 	@Test
 	public void testDelete() {
 		sysDepartmentService = super.getBean("sysDepartmentService");
-		sysDepartmentService.delete(7);
+		sysDepartmentService.delete(8);
 	}
 }

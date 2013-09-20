@@ -2,11 +2,9 @@ package com.glaf.base.modules.sys.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.Hibernate;
 
 import com.glaf.base.dao.AbstractSpringDao;
 import com.glaf.base.modules.sys.SysConstants;
@@ -99,45 +97,61 @@ public class SysDepartmentServiceImpl implements SysDepartmentService {
 	 *            SysDepartment
 	 * @return boolean
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean delete(SysDepartment bean) {
 		logger.debug("---------------delete dept------------------------");
-		Object[] values = new Object[] { new Long(bean.getId()) };
-		String query = "from SysDeptRole a where a.dept.id=? order by a.sort desc";
-		List<SysDeptRole> deptRoles = abstractDao.getList(query, values, null);
-		if (deptRoles != null && !deptRoles.isEmpty()) {
-			for (SysDeptRole deptRole : deptRoles) {
-				long deptRoleId = deptRole.getId();
-				abstractDao
-						.executeSQL(" delete from sys_permission where roleId="
-								+ deptRoleId);
-				abstractDao.executeSQL(" delete from sys_access where roleId="
-						+ deptRoleId);
-				abstractDao
-						.executeSQL(" delete from sys_user_role where roleId="
-								+ deptRoleId);
-				abstractDao.executeSQL(" delete from sys_dept_role where id="
-						+ deptRoleId);
-			}
-		}
-
-		logger.debug("---------------delete users------------------------");
-		abstractDao.executeSQL(" delete from sys_user where deptId="
-				+ bean.getId());
-		abstractDao.executeSQL(" delete from sys_department where id="
-				+ bean.getId());
-
+		List<SysTree> trees = new ArrayList<SysTree>();
+		int nodeId = 0;
 		if (bean.getNode() != null) {
-			abstractDao.executeSQL(" delete from sys_tree where id="
-					+ bean.getNode().getId());
-			// sysTreeService.delete(bean.getNode().getId());
+			nodeId = (int) bean.getNode().getId();
 		} else {
 			if (bean.getNodeId() != 0) {
-				abstractDao.executeSQL(" delete from sys_tree where id="
-						+ bean.getNodeId());
-				// sysTreeService.delete(bean.getNodeId());
+				nodeId = (int) bean.getNodeId();
 			}
 		}
+		SysTree root = sysTreeService.getSysTreeWithDept(nodeId);
+		if (root != null && root.getDepartment() != null) {
+			trees.add(root);
+		}
+		sysTreeService.getSysTreeWithDepts(trees, nodeId, 0);
+		if (trees != null && !trees.isEmpty()) {
+			for (SysTree tree : trees) {
+				if (tree.getDepartment() != null) {
+					SysDepartment dept = tree.getDepartment();
+					Object[] values = new Object[] { new Long(dept.getId()) };
+					String query = "from SysDeptRole a where a.dept.id=? order by a.sort desc";
+					List<SysDeptRole> deptRoles = abstractDao.getList(query,
+							values, null);
+					if (deptRoles != null && !deptRoles.isEmpty()) {
+						for (SysDeptRole deptRole : deptRoles) {
+							long deptRoleId = deptRole.getId();
+							abstractDao
+									.executeSQL(" delete from sys_permission where roleId="
+											+ deptRoleId);
+							abstractDao
+									.executeSQL(" delete from sys_access where roleId="
+											+ deptRoleId);
+							abstractDao
+									.executeSQL(" delete from sys_user_role where roleId="
+											+ deptRoleId);
+							abstractDao
+									.executeSQL(" delete from sys_dept_role where id="
+											+ deptRoleId);
+						}
+					}
+					logger.debug("---------------delete users------------------------");
+					abstractDao
+							.executeSQL(" delete from sys_user where deptId="
+									+ dept.getId());
+					abstractDao
+							.executeSQL(" delete from sys_department where id="
+									+ dept.getId());
 
+					abstractDao.executeSQL(" delete from sys_tree where id="
+							+ tree.getId());
+				}
+			}
+		}
 		return true;
 	}
 
